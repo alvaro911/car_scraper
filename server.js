@@ -1,40 +1,48 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const request = require('request')
 const async = require('async')
 
 const {DATABASE_URL, PORT} = require('./config')
 const {getLinks, carBuilderInfo} = require('./scraper')
+const CarList = require('./models/carlists')
+const carReq = require('./request')
+
 const app = express()
+const port = 3000
 app.use(bodyParser.json())
 
-request('https://boulder.craigslist.org/search/cto?query=honda', (err, res, html)=>{
-  let hrefs = getLinks(html)
-  // console.log(hrefs)
+const url = 'https://boulder.craigslist.org/search/cto?query='
 
-  async.map(hrefs, getCars, (err, results) => {
-    results.save(err => {
+function getCar(url, cb){
+  carReq(url, html=>{
+    cb('Error', carBuilderInfo(html))
+  })
+}
 
-    });
-  });
-})
+function carDb(url, cb){
+  carReq(url, html => {
+    let hrefs = getLinks(html)
 
-function getCars(url, cb){
-  request(url, (err, res, html)=>{
-    cb(err, carBuilderInfo(html))
+    async.map(hrefs, getCar, (err, results) => {
+      CarList.create(results, err => {
+        console.log('your car list is being saved in the data base')
+        if(err) console.log(err)
+        cb(results)
+      })
+    })
   })
 }
 
 app.get('/cars', (req, res)=>{
-  
+  let searchParam = req.query.query
+  let year = req.query.year
+  carDb(`${url}${searchParam}`, carData => res.json(carData))
 })
-app.post('/blog-posts', (req, res)=>{
 
+app.get('/cars/:id', (req, res)=>{
+  let url = `https://boulder.craigslist.org/cto/`
+  getCar(`${url}${req.params.id}.html`, (err, carData) => res.json(carData))
 })
-app.put('/blog-posts/:id', (req, res)=>{
 
-})
-app.delete('/blog-posts/:id', (req, res)=>{
-
-})
+app.listen(port, ()=> console.log(`server listening to port ${port}`))

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const URL = 'mongodb://localhost:27017/car_finder_app'
 
-const Schema = mongoose.Schema()
+const Schema = mongoose.Schema
 
 mongoose.connect(URL)
 mongoose.connection.on('error', () => {
@@ -10,11 +10,19 @@ mongoose.connection.on('error', () => {
 })
 
 const carFinderSchema = new Schema({
-  link: String,
+  carId: String,
   city: String,
   title: String,
   price: String,
-  image: String
+  img: String
+})
+
+const users = new Schema({
+  userName: {type:String, required:true},
+  email: {type:String, required: true},
+  password: {type:String, required: true},
+  cities:[],
+  models:[]
 })
 
 module.exports = mongoose.model('CarList', carFinderSchema)
