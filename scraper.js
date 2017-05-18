@@ -35,6 +35,7 @@ function carBuilderInfo(html){
   page.title=titleText
   page.price=priceText
   page.img=img['0'] && img['0'].attribs.src
+  // console.log(page)
   return page
 }
 

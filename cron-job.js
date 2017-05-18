@@ -13,21 +13,21 @@ let transporter = nodemailer.createTransport({
 let mailOptions = {
     from: '"Alvaro G" <alvaro.gomez911@gmail.com>',
     to: 'alvaro.gomez911@gmail.com',
-    subject: 'Hello ✔',
+    subject: 'node cron email',
     text: 'Hello world ?',
     html: '<b>Hello world ?</b>'
 };
 
 const emails = new cron.CronJob({
-  cronTime: '*/5 * * * * *',
-  onTick: transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+  cronTime: '00 00 14 * * *',
+  onTick:()=>{
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
         return console.log(error);
-    }
-    console.log('Message %s sent: %s', info.messageId, info.response);
-  })
+      }
+      console.log('Message %s sent: %s', info.messageId, info.response);
+    })
+  }
 })
 
 emails.start();
-
-// console.log('job1 status', job1.running)

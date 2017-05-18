@@ -12,11 +12,12 @@ const app = express()
 const port = 3000
 app.use(bodyParser.json())
 
+app.use(express.static('public'))
 const url = 'https://boulder.craigslist.org/search/cto?query='
 
 function getCar(url, cb){
   carReq(url, html=>{
-    cb('Error', carBuilderInfo(html))
+    cb(null, carBuilderInfo(html))
   })
 }
 
@@ -24,7 +25,7 @@ function carDb(url, cb){
   carReq(url, html => {
     let hrefs = getLinks(html)
 
-    async.map(hrefs, getCar, (err, results) => {
+    async.mapLimit(hrefs, 10, getCar, (err, results) => {
       CarList.create(results, err => {
         console.log('your car list is being saved in the data base')
         if(err) console.log(err)
@@ -35,14 +36,19 @@ function carDb(url, cb){
 }
 
 app.get('/cars', (req, res)=>{
-  let searchParam = req.query.query
-  let year = req.query.year
+  let searchParam = req.query.model
+  console.log('query', req.query.model);
   carDb(`${url}${searchParam}`, carData => res.json(carData))
 })
 
 app.get('/cars/:id', (req, res)=>{
+  console.log('id:', req.params.id);
   let url = `https://boulder.craigslist.org/cto/`
-  getCar(`${url}${req.params.id}.html`, (err, carData) => res.json(carData))
+  getCar(`${url}${req.params.id}.html`, (err, carData) => {
+    console.log(carData);
+    res.json(carData);
+  })
+
 })
 
 app.listen(port, ()=> console.log(`server listening to port ${port}`))
