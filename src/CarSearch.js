@@ -1,5 +1,6 @@
 var React = require('react')
-const axios = require('axios');
+var getCars = require('./actions')
+var {connect} = require('react-redux')
 
 class CarSearch extends React.Component{
   constructor(props) {
@@ -8,28 +9,19 @@ class CarSearch extends React.Component{
       carlist: []
     }
   }
-  getCars(e){
+  startSearch(e){
     e.preventDefault()
     // console.log('this', this.refs.model.value)
     let model = this.refs.model.value
     let city = this.refs.city.value
-    axios.get('/cars', {
-      params: {
-        model: model
-      }
-    })
-    .then(response => {
-      // console.log('Query Response: ', response.data);
-      this.setState({carlist: response.data})
-    })
+    this.props.dispatch(getCars(model))
   }
 
   render(){
-    console.log(this.state.carList)
     return(
       <div className="car-search">
         <h3>Search for your car</h3>
-        <form onSubmit={this.getCars.bind(this)}>
+        <form onSubmit={this.startSearch.bind(this)}>
           <label>State</label><br/>
           <input type="text" ref="state" placeholder="state"/>
           <label>City</label><br/>
@@ -38,10 +30,10 @@ class CarSearch extends React.Component{
           <input type="text" ref="model" placeholder="model"/>
           <button type="submit">Search</button>
         </form>
-
       </div>
     )
   }
 }
 
-module.exports = CarSearch
+function mapStateToProps(state){return {}}
+module.exports = connect(mapStateToProps)(CarSearch)

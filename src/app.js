@@ -1,23 +1,27 @@
 var React = require('react')
-var ReactRouter = require('react-router-dom')
-var Router = ReactRouter.BrowserRouter
-var Route = ReactRouter.Route
-var Link = require('react-router-dom').Link
+var { HashRouter, Route } = require('react-router-dom')
+var {Provider} = require('react-redux')
+var {createStore, applyMiddleware} = require('redux')
+var thunk = require('redux-thunk')
 
 var Home = require('./Home')
 var CarList = require('./CarList')
+var reducers = require ('./allReducers')
+var store = createStore(reducers, applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
-function App(props) {
-  return (
-    <Router>
-      <div className="app">
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route path="/carlist" component={CarList} />
-        </main>
-      </div>
-    </Router>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <HashRouter>
+          <div className="app">
+            <Route exact path='/' component={Home}/>
+            <Route path='/carlist' component={CarList}/>
+          </div>
+        </HashRouter>
+      </Provider>
+    );
+  }
 }
 
 module.exports = App
