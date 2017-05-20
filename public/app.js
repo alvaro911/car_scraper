@@ -8223,10 +8223,16 @@ var CarSearch = function (_React$Component) {
     _this.state = {
       carlist: []
     };
+    _this.toCarlist = _this.toCarlist.bind(_this);
     return _this;
   }
 
   _createClass(CarSearch, [{
+    key: 'toCarlist',
+    value: function toCarlist() {
+      this.props.history.push('/carlist');
+    }
+  }, {
     key: 'startSearch',
     value: function startSearch(e) {
       e.preventDefault();
@@ -8272,7 +8278,7 @@ var CarSearch = function (_React$Component) {
           React.createElement('input', { type: 'text', ref: 'model', placeholder: 'model' }),
           React.createElement(
             'button',
-            { type: 'submit' },
+            { type: 'submit', onClick: this.toCarlist },
             'Search'
           )
         )
@@ -12895,7 +12901,7 @@ var Home = function (_React$Component) {
         React.createElement(Header, null),
         React.createElement(Hero, null),
         React.createElement(HowItWorks, null),
-        React.createElement(CarSearch, null)
+        React.createElement(CarSearch, { history: this.props.history })
       );
     }
   }]);
@@ -14055,11 +14061,12 @@ var axios = __webpack_require__(121);
 
 function getCars(model) {
   return function (dispatch) {
-    return axios.get('/cars', {
+    axios.get('/cars', {
       params: {
         model: model
       }
     }).then(function (response) {
+      console.log(response.data);
       return dispatch({
         type: 'LOAD_CARS',
         cars: response.data
@@ -14084,6 +14091,7 @@ var carlist = function carlist() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments[1];
 
+  console.log(state);
   switch (action.type) {
     case 'LOAD_CARS':
       return action.cars;

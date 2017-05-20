@@ -7,6 +7,7 @@ import configureStore from './store';
 var Home = require('./Home')
 var CarList = require('./CarList')
 
+
 const store = configureStore();
 
 render(

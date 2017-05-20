@@ -8,6 +8,11 @@ class CarSearch extends React.Component{
     this.state = {
       carlist: []
     }
+    this.toCarlist = this.toCarlist.bind(this)
+  }
+
+  toCarlist(){
+    this.props.history.push('/carlist')
   }
   startSearch(e){
     e.preventDefault()
@@ -28,7 +33,7 @@ class CarSearch extends React.Component{
           <input type="text" ref="city" placeholder="city"/>
           <label>Model</label><br/>
           <input type="text" ref="model" placeholder="model"/>
-          <button type="submit">Search</button>
+          <button type="submit" onClick={this.toCarlist}>Search</button>
         </form>
       </div>
     )
