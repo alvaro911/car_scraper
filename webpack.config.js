@@ -3,7 +3,7 @@ module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, './src'),
   entry: {
-    app: './index.js',
+    app: './app.js',
   },
   output: {
     path: path.resolve(__dirname, './public'),
