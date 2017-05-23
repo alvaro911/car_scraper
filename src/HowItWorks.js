@@ -6,7 +6,7 @@ class HowItWorks extends React.Component{
       <div className="how-it-works">
         <div className="diagonal"></div>
         <div className="explainer">
-          <h3>How it Works</h3>
+          <h3 className="hind">How it Works</h3>
           <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
         </div>
       </div>

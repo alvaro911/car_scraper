@@ -9,4 +9,8 @@ const carlist = (state=[], action) => {
       return state
   }
 }
+
+const selectCarById = (state, id) => {
+  return state.find(car => car.id === id)
+}
 module.exports = combineReducers({carlist})

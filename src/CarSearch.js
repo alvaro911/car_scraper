@@ -1,4 +1,5 @@
 var React = require('react')
+var {withRouter} = require('react-router-dom')
 var getCars = require('./actions')
 var {connect} = require('react-redux')
 
@@ -8,18 +9,18 @@ class CarSearch extends React.Component{
     this.state = {
       carlist: []
     }
-    this.toCarlist = this.toCarlist.bind(this)
   }
 
-  toCarlist(){
-    this.props.history.push('/carlist')
-  }
+
+
   startSearch(e){
     e.preventDefault()
-    // console.log('this', this.refs.model.value)
-    let model = this.refs.model.value
+    let query = this.refs.model.value
     let city = this.refs.city.value
-    this.props.dispatch(getCars(model))
+    this.props.dispatch(getCars(query, city))
+    if(this.props.location.pathname !== 'carlist'){
+      this.props.history.push('/carlist')
+    }
   }
 
   render(){
@@ -28,12 +29,12 @@ class CarSearch extends React.Component{
         <h3>Search for your car</h3>
         <form onSubmit={this.startSearch.bind(this)}>
           <label>State</label><br/>
-          <input type="text" ref="state" placeholder="state"/>
+          <input type="text" placeholder="state"/>
           <label>City</label><br/>
           <input type="text" ref="city" placeholder="city"/>
           <label>Model</label><br/>
           <input type="text" ref="model" placeholder="model"/>
-          <button type="submit" onClick={this.toCarlist}>Search</button>
+          <button type="submit">Search</button>
         </form>
       </div>
     )
@@ -41,4 +42,4 @@ class CarSearch extends React.Component{
 }
 
 function mapStateToProps(state){return {}}
-module.exports = connect(mapStateToProps)(CarSearch)
+module.exports = withRouter(connect(mapStateToProps)(CarSearch))

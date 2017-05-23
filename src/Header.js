@@ -5,7 +5,7 @@ class Header extends React.Component{
     return (
     <div>
       <header>
-        <h2>CarStock</h2>
+        <h2 className="hind">CarStock</h2>
       </header>
     </div>
   )}

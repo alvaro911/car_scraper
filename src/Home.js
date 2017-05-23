@@ -12,7 +12,7 @@ class Home extends React.Component{
         <Header/>
         <Hero/>
         <HowItWorks/>
-        <CarSearch history={this.props.history}/>
+        <CarSearch/>
       </div>
     )
   }

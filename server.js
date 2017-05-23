@@ -16,14 +16,14 @@ app.use(express.static('public'))
 const url = 'https://boulder.craigslist.org/search/cto?query='
 
 function getCar(url, cb){
-  carReq(url, html=>{
+  carReq(url, (html)=>{
     cb(null, carBuilderInfo(html))
   })
 }
 
-function carDb(url, cb){
-  carReq(url, html => {
-    let hrefs = getLinks(html)
+function carDb(url, city, cb){
+  carReq(url, (html) => {
+    let hrefs = getLinks(html, city)
 
     async.mapLimit(hrefs, 10, getCar, (err, results) => {
       CarList.create(results, err => {
@@ -36,12 +36,12 @@ function carDb(url, cb){
 }
 
 app.get('/cars', (req, res)=>{
-  let searchParam = req.query.model
-  console.log('query', req.query.model);
-  carDb(`${url}${searchParam}`, carData => res.json(carData))
+  const searchParam = req.query.query
+  const searchCity = req.query.city
+  carDb(`https://${searchCity}.craigslist.org/search/cto?query=${searchParam}`, searchCity, carData => res.json(carData))
 })
 
-app.get('/cars/:id', (req, res)=>{
+app.get('/car/:id', (req, res)=>{
   console.log('id:', req.params.id);
   let url = `https://boulder.craigslist.org/cto/`
   getCar(`${url}${req.params.id}.html`, (err, carData) => {

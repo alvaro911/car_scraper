@@ -1,12 +1,11 @@
 const cheerio = require('cheerio')
 const aMap = require('async/map')
 
-const url = 'https://boulder.craigslist.org'
-
-function getLinks(html){
+function getLinks(html, city){
+  const url = `https://${city}.craigslist.org`
   const $ = cheerio.load(html)
   let carsLink = $('.result-row a');
-  var hrefs = Array.from(carsLink).map((link, i) => {
+  const hrefs = Array.from(carsLink).map((link, i) => {
     return link.attribs.href.indexOf('.html') > -1 && link.attribs.href.startsWith('/cto') ? `${url}${link.attribs.href}` : null;
   }).filter(item => !!item).filter((item, pos, self) => {
     return self.indexOf(item) == pos

@@ -8207,10 +8207,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = __webpack_require__(4);
+
+var _require = __webpack_require__(120),
+    withRouter = _require.withRouter;
+
 var getCars = __webpack_require__(143);
 
-var _require = __webpack_require__(39),
-    connect = _require.connect;
+var _require2 = __webpack_require__(39),
+    connect = _require2.connect;
 
 var CarSearch = function (_React$Component) {
   _inherits(CarSearch, _React$Component);
@@ -8223,23 +8227,19 @@ var CarSearch = function (_React$Component) {
     _this.state = {
       carlist: []
     };
-    _this.toCarlist = _this.toCarlist.bind(_this);
     return _this;
   }
 
   _createClass(CarSearch, [{
-    key: 'toCarlist',
-    value: function toCarlist() {
-      this.props.history.push('/carlist');
-    }
-  }, {
     key: 'startSearch',
     value: function startSearch(e) {
       e.preventDefault();
-      // console.log('this', this.refs.model.value)
-      var model = this.refs.model.value;
+      var query = this.refs.model.value;
       var city = this.refs.city.value;
-      this.props.dispatch(getCars(model));
+      this.props.dispatch(getCars(query, city));
+      if (this.props.location.pathname !== 'carlist') {
+        this.props.history.push('/carlist');
+      }
     }
   }, {
     key: 'render',
@@ -8261,7 +8261,7 @@ var CarSearch = function (_React$Component) {
             'State'
           ),
           React.createElement('br', null),
-          React.createElement('input', { type: 'text', ref: 'state', placeholder: 'state' }),
+          React.createElement('input', { type: 'text', placeholder: 'state' }),
           React.createElement(
             'label',
             null,
@@ -8278,7 +8278,7 @@ var CarSearch = function (_React$Component) {
           React.createElement('input', { type: 'text', ref: 'model', placeholder: 'model' }),
           React.createElement(
             'button',
-            { type: 'submit', onClick: this.toCarlist },
+            { type: 'submit' },
             'Search'
           )
         )
@@ -8292,7 +8292,7 @@ var CarSearch = function (_React$Component) {
 function mapStateToProps(state) {
   return {};
 }
-module.exports = connect(mapStateToProps)(CarSearch);
+module.exports = withRouter(connect(mapStateToProps)(CarSearch));
 
 /***/ }),
 /* 74 */
@@ -12762,8 +12762,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = __webpack_require__(4);
 
-var _require = __webpack_require__(39),
-    connect = _require.connect;
+var _require = __webpack_require__(120),
+    withRouter = _require.withRouter;
+
+var _require2 = __webpack_require__(39),
+    connect = _require2.connect;
 
 var NewSearch = __webpack_require__(142);
 var CarSearch = __webpack_require__(73);
@@ -12778,12 +12781,19 @@ var CarList = function (_React$Component) {
   }
 
   _createClass(CarList, [{
+    key: 'goToCar',
+    value: function goToCar(id) {
+      this.props.history.push('/car/' + id);
+    }
+  }, {
     key: 'renderCarlist',
     value: function renderCarlist() {
+      var _this2 = this;
+
       return this.props.carlist.map(function (car) {
         return React.createElement(
           'li',
-          { key: car.carId },
+          { key: car.carId, onClick: _this2.goToCar.bind(_this2, car.carId) },
           React.createElement(
             'div',
             { className: 'car-wrapper' },
@@ -12859,7 +12869,7 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(CarList);
+module.exports = withRouter(connect(mapStateToProps)(CarList));
 
 /***/ }),
 /* 117 */
@@ -12901,7 +12911,7 @@ var Home = function (_React$Component) {
         React.createElement(Header, null),
         React.createElement(Hero, null),
         React.createElement(HowItWorks, null),
-        React.createElement(CarSearch, { history: this.props.history })
+        React.createElement(CarSearch, null)
       );
     }
   }]);
@@ -13878,18 +13888,18 @@ var Header = function (_React$Component) {
   }
 
   _createClass(Header, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
+        "div",
         null,
         React.createElement(
-          'header',
+          "header",
           null,
           React.createElement(
-            'h2',
-            null,
-            'CarStock'
+            "h2",
+            { className: "hind" },
+            "CarStock"
           )
         )
       );
@@ -13981,7 +13991,7 @@ var HowItWorks = function (_React$Component) {
           { className: "explainer" },
           React.createElement(
             "h3",
-            null,
+            { className: "hind" },
             "How it Works"
           ),
           React.createElement(
@@ -14059,11 +14069,12 @@ module.exports = NewSearch;
 
 var axios = __webpack_require__(121);
 
-function getCars(model) {
+function getCars(query, city) {
   return function (dispatch) {
     axios.get('/cars', {
       params: {
-        model: model
+        query: query,
+        city: city
       }
     }).then(function (response) {
       console.log(response.data);
@@ -14099,6 +14110,12 @@ var carlist = function carlist() {
       return state;
   }
 };
+
+var selectCarById = function selectCarById(state, id) {
+  return state.find(function (car) {
+    return car.id === id;
+  });
+};
 module.exports = combineReducers({ carlist: carlist });
 
 /***/ }),
@@ -14128,6 +14145,7 @@ var _require = __webpack_require__(120),
 
 var Home = __webpack_require__(117);
 var CarList = __webpack_require__(116);
+var Car = __webpack_require__(299);
 
 var store = (0, _store2.default)();
 
@@ -31579,6 +31597,50 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(4);
+
+var Car = function (_React$Component) {
+  _inherits(Car, _React$Component);
+
+  function Car() {
+    _classCallCheck(this, Car);
+
+    return _possibleConstructorReturn(this, (Car.__proto__ || Object.getPrototypeOf(Car)).apply(this, arguments));
+  }
+
+  _createClass(Car, [{
+    key: 'render',
+    value: function render() {
+      this.props.car;
+      return React.createElement('div', null);
+    }
+  }]);
+
+  return Car;
+}(React.Component);
+
+function mapStateToProps(state) {
+  return {
+    car: selectCarById(state, this.propos.location.pathname)
+  };
+}
+module.exports = connect(mapStateToProps)(Car);
 
 /***/ })
 /******/ ]);

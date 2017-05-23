@@ -1,10 +1,11 @@
 var axios = require('axios')
 
-function getCars(model){
+function getCars(query, city){
   return dispatch => {
     axios.get('/cars', {
       params: {
-        model: model
+        query: query,
+        city: city
       }
     })
     .then(response => {
