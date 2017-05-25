@@ -18,4 +18,14 @@ function getCars(query, city){
   }
 }
 
-module.exports = getCars
+const getCarById = (id) => dispatch => {
+  axios.get(`/car/6130513059`)
+    .then(response => {
+      dispatch({
+        type: 'FOUNDCAR',
+        payload: response.data
+      })
+    })
+}
+
+module.exports = {getCars, getCarById}

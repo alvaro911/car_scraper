@@ -17,12 +17,4 @@ const carFinderSchema = new Schema({
   img: String
 })
 
-const users = new Schema({
-  userName: {type:String, required:true},
-  email: {type:String, required: true},
-  password: {type:String, required: true},
-  cities:[],
-  models:[]
-})
-
 module.exports = mongoose.model('CarList', carFinderSchema)

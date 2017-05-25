@@ -4,6 +4,7 @@ var {connect} = require('react-redux')
 
 var NewSearch = require('./NewSearch')
 var CarSearch = require('./CarSearch')
+var mockData = require('./mock-data')
 
 class CarList extends React.Component{
 
@@ -34,13 +35,37 @@ class CarList extends React.Component{
     })
   }
 
+  renderMock(){
+    return mockData.map((car) => {
+      return(
+        <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
+          <div className="car-wrapper">
+            <div className="car-img">
+              <img src={car.img} />
+            </div>
+            <div className="car-info">
+              <h3>{car.title}</h3>
+              <h4>{car.city}</h4>
+              <h4>{car.price}</h4>
+              <div className="buttons">
+                <button>Save</button>
+                <a href="#" className="button"><div>Buy</div></a>
+              </div>
+            </div>
+          </div>
+        </li>
+      )
+    })
+  }
+
   render(){
+    // console.log(mockData)
     return(
       <div className="app-body">
         <NewSearch />
         <CarSearch />
         <ul>
-          {this.renderCarlist()}
+          {this.renderMock()}
         </ul>
       </div>
     )

@@ -11,8 +11,6 @@ class CarSearch extends React.Component{
     }
   }
 
-
-
   startSearch(e){
     e.preventDefault()
     let query = this.refs.model.value

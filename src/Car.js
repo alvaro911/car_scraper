@@ -1,19 +1,32 @@
 var React = require('react')
+var {connect} = require('react-redux')
+const { getCarById } = require('./actions')
 
 class Car extends React.Component{
+  componentDidMount() {
+    this.props.getCarById(12344)
+  }
   render(){
-    this.props.car
+    if (this.props.foundCar){
+      return (
+        <div>
+          {this.props.foundCar['title']}
+        </div>
+      )
+    }
     return(
       <div>
-
+        Loading!!!
       </div>
     )
   }
 }
 
-function mapStateToProps(state){
-  return {
-    car: selectCarById(state, this.propos.location.pathname)
-  }
+function mapStateToProps({carlist}){
+  const { foundCar } = carlist;
+  return { foundCar }
 }
-module.exports = connect(mapStateToProps)(Car)
+
+module.exports = connect(mapStateToProps, {
+  getCarById,
+})(Car)

@@ -17,6 +17,7 @@ render(
         <div className="app">
           <Route exact path='/' component={Home}/>
           <Route path='/carlist' component={CarList}/>
+          <Route path='/car/:id' component={Car}/>
         </div>
       </HashRouter>
     </Provider>,
