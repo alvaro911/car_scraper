@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const async = require('async')
 const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
+const BasicStrategy = require('passport-http').BasicStrategy;
 
 const {DATABASE_URL, PORT} = require('./config')
 const {getLinks, carBuilderInfo} = require('./scraper')
@@ -12,23 +12,32 @@ const User = require('./models/user')
 const carReq = require('./request')
 
 const app = express()
-const port = 3000
+const port = 3030
 
 app.use(bodyParser.json())
-passport.use(new LocalStrategy({
-        usernameField: 'userid',
-        passwordField: 'password'
-    },
-    function(userid, password, done) {
-        console.log('work!!!')
-        done('err',{
-          user:'ninja!!'
-        });
-    }));
-app.use(passport.initialize())
+passport.use(new BasicStrategy(
+  function(username, password, callback) {
+    console.log('username', username)
+    console.log('password', password)
+    console.log('here');
+    callback(null, {
+      username: 'jason'
+    })
+  }
+));
 
+app.use(passport.initialize())
 app.use(express.static('public'))
 const url = 'https://boulder.craigslist.org/search/cto?query='
+
+app.get(
+  '/login',
+  passport.authenticate('basic'),
+  (req, res) => {
+    res.json({
+      is: "here"
+  })
+})
 
 function getUser(username, cb){
   User.findOne({username}, (err, user)=>{
