@@ -5,6 +5,8 @@ const async = require('async')
 const passport = require('passport')
 const BasicStrategy = require('passport-http').BasicStrategy;
 
+mongoose.Promise = global.Promise
+
 const {DATABASE_URL, PORT} = require('./config')
 const {getLinks, carBuilderInfo} = require('./scraper')
 const CarList = require('./models/carlists')
@@ -12,7 +14,6 @@ const User = require('./models/user')
 const carReq = require('./request')
 
 const app = express()
-const port = 3030
 
 app.use(bodyParser.json())
 passport.use(new BasicStrategy(
@@ -90,10 +91,48 @@ app.get('/car/:id', (req, res)=>{
 })
 
 app.post("/login"
-        ,passport.authenticate('local',{
-            successRedirect : "/",
-            failureRedirect : "/login",
-        })
-    );
+    ,passport.authenticate('local',{
+        successRedirect : "/",
+        failureRedirect : "/login",
+    })
+);
 
-app.listen(port, ()=> console.log(`server listening to port ${port}`))
+let server
+
+function runServer(databaseUrl=DATABASE_URL, port=PORT){
+  return new Promise((res, rej)=>{
+    mongoose.connect(databseUrl, err=>{
+      if(err){
+        return rej(err)
+      }
+      server = app.listen(port, ()=>{
+        consoe.log(`server listening to port ${port}`)
+        res()
+      })
+      .on('Error', err=>{
+        mongoose.disconnect()
+        rej(err)
+      })
+    })
+  })
+}
+
+function closeServer(){
+  return mongoose.disconnect().then(()=>{
+    return new Promise((res, rej)=>{
+      console.log('closing server')
+      server.close(err=>{
+        if(err){
+          return rej(err)
+        }
+        res()
+      })
+    })
+  })
+}
+
+if(require.main === module){
+  runServer().catch(err => console.error(err))
+}
+
+module.exports = {app, runServer, closeServer}

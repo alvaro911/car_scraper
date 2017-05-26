@@ -4,7 +4,7 @@
   "description": "fetch data from craig's list",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node server.js"
   },
   "author": "",
@@ -42,6 +42,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
+    "faker": "^4.1.0",
     "mocha": "^3.3.0"
   }
 }
