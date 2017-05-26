@@ -28,7 +28,6 @@ passport.use(new BasicStrategy(
 
 app.use(passport.initialize())
 app.use(express.static('public'))
-const url = 'https://boulder.craigslist.org/search/cto?query='
 
 app.get(
   '/login',
@@ -68,7 +67,7 @@ function carDb(url, city, cb){
 app.get('/cars', (req, res)=>{
   const searchParam = req.query.query
   const searchCity = req.query.city
-  carDb(`https://${searchCity}.craigslist.org/search/cto?query=${searchParam}`, searchCity, carData => res.json(carData))
+  carDb(`https://${searchCity}.craigslist.org/search/cto?query=${searchParam}`, searchCity, carData => res.status(200).json(carData))
 })
 
 app.get('/car/:id', (req, res)=>{

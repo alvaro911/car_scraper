@@ -32,7 +32,7 @@ img{
   height: auto;
 }
 
-h2{
+h2, h3, h5{
   margin:0;
 }
 
@@ -47,6 +47,10 @@ ul{
 
 li{
   list-style: none
+}
+
+form{
+  margin-top: 1.3em;
 }
 
 .app-body{
@@ -161,15 +165,161 @@ header{
 
 .car-info{
   width:55%;
-  height: 150;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.buttons{
+.car{
   width: 100%;
+  height: auto;
+}
+
+.banner-info{
+  width: 100%;
+  height: auto;
+  padding: 1em .7em;
   display: flex;
-  flex-direction: row;
   flex-wrap: nowrap;
+  flex-direction: row;
+  background-color: #ffae00;
+}
+
+.values{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-picture{
+  width: 100%;
+  height: 42vh;
+  overflow: hidden;
+}
+
+.car-elements{
+  width: 100%;
+  padding: 1em .7em;
+}
+
+.car-link-button{
+  width: 100%;
+  padding: 1em 0;
+  background-color: #ffae00;
+  color: black;
+  text-align: center;
+  -webkit-transition: all .25s ease;
+  -moz-transition: all .25s ease;
+  -ms-transition: all .25s ease;
+  -o-transition: all .25s ease;
+  transition: all .25s ease;
+}
+
+.car-link-button:hover{
+  background-color: black;
+  color: white;
+}
+
+/* iPhone 7S plus */
+@media (min-width: 414px) and (max-width: 736px) and (orientation: landscape){
+  header{
+    padding: 0;
+  }
+
+  .hero-img{
+    height: 75vh;
+  }
+
+  .explainer{
+    margin-top: -45px;
+    padding: 0 3em 1em;
+  }
+
+  .car-search{
+    padding: 1em 3em;
+  }
+
+  ul{
+    padding: 0 3em;
+  }
+
+  .car-picture{
+    height: 80vh;
+  }
+
+
+}
+
+/* iPhone 7S */
+@media (min-width: 375px) and (max-width: 667px) and (orientation: landscape){
+  .explainer{
+    margin-top: -17px;
+  }
+}
+
+/* iPad */
+@media (min-width: 768px) and (max-width:1024px) and (orientation:portrait){
+  .explainer{
+    padding: 0 3em 1em;
+    margin-top: -18px
+  }
+
+  .car-search{
+    padding: 3em;
+  }
+
+  ul{
+    padding: 0 3em;
+  }
+
+  .car-wrapper{
+    padding: 2.5em 0;
+  }
+
+  .car-img{
+    height: 221px;
+  }
+
+  .car-elements{
+    padding: 1em 3em;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation:landscape){
+  .hero-img{
+    height: 80vh;
+  }
+
+  .diagonal{
+    height: 6em;
+  }
+
+  .explainer{
+    margin-top: -25px;
+    padding: 0 7em 1em;
+  }
+
+  ul{
+    padding: 0 7em;
+  }
+
+  .car-search{
+    padding: 2em 7em;
+  }
+
+  .car-wrapper{
+    padding: 3.5em 0;
+  }
+
+  .car-img{
+    height: 263px
+  }
+
+  .car-picture{
+    height: 89vh;
+  }
+
+  .car-elements{
+    padding: 2em 17em 0 5em;
+  }
 }

@@ -25,8 +25,7 @@ class CarList extends React.Component{
               <h4>{car.city}</h4>
               <h4>{car.price}</h4>
               <div className="buttons">
-                <button>Save</button>
-                <a href="#" className="button"><div>Buy</div></a>
+                <a href="#"><div className="car-link-button">Buy</div></a>
               </div>
             </div>
           </div>
@@ -47,10 +46,7 @@ class CarList extends React.Component{
               <h3>{car.title}</h3>
               <h4>{car.city}</h4>
               <h4>{car.price}</h4>
-              <div className="buttons">
-                <button>Save</button>
-                <a href="#" className="button"><div>Buy</div></a>
-              </div>
+              <a href="#"><div className="car-link-button">Buy</div></a>
             </div>
           </div>
         </li>
