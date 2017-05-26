@@ -101,12 +101,12 @@ let server
 
 function runServer(databaseUrl=DATABASE_URL, port=PORT){
   return new Promise((res, rej)=>{
-    mongoose.connect(databseUrl, err=>{
+    mongoose.connect(databaseUrl, err=>{
       if(err){
         return rej(err)
       }
       server = app.listen(port, ()=>{
-        consoe.log(`server listening to port ${port}`)
+        console.log(`server listening to port ${port}`)
         res()
       })
       .on('Error', err=>{
