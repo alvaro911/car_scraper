@@ -1,19 +1,26 @@
 var {combineReducers} = require('redux')
 
-const carlist = (state={}, action) => {
-  console.log(state)
+const initialState = {
+  cars:[],
+  loading: false
+}
+const carlist = (state=initialState, action) => {
   switch (action.type){
     case 'LOAD_CARS':
-      return action.cars
+      return {
+        ...state,
+        loading: true
+      }
+    case 'LOAD_CARS_SUCCESS':
+      return {
+        cars: action.cars,
+        loading: false
+      }
     case 'FOUNDCAR':
-      // console.log(action.payload)
-      return {foundCar: action.payload}
+      return Object.assign(state, {foundCar: action.payload})
     default:
       return state
   }
 }
 
-// const selectCarById = (state, id) => {
-//   return state.find(car => car.id === id)
-// }
 module.exports = combineReducers({carlist})

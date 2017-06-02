@@ -8,12 +8,16 @@ var mockData = require('./mock-data')
 
 class CarList extends React.Component{
 
-  goToCar(id){
+  goToCar(id, city){
     this.props.history.push(`/car/${id}`)
   }
 
   renderCarlist(){
-    return this.props.carlist.map(car => {
+    const { cars, loading } = this.props.carlist
+    if(loading){
+      return <h1>Loading...</h1>
+    }
+    return cars.map(car => {
       return (
         <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
           <div className="car-wrapper">
@@ -34,44 +38,44 @@ class CarList extends React.Component{
     })
   }
 
-  renderMock(){
-    return mockData.map((car) => {
-      return(
-        <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
-          <div className="car-wrapper">
-            <div className="car-img">
-              <img src={car.img} />
-            </div>
-            <div className="car-info">
-              <h3>{car.title}</h3>
-              <h4>{car.city}</h4>
-              <h4>{car.price}</h4>
-              <a href="#"><div className="car-link-button">Buy</div></a>
-            </div>
-          </div>
-        </li>
-      )
-    })
-  }
+  // renderMock(){
+  //   return mockData.map((car) => {
+  //     return(
+  //       <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
+  //         <div className="car-wrapper">
+  //           <div className="car-img">
+  //             <img src={car.img} />
+  //           </div>
+  //           <div className="car-info">
+  //             <h3>{car.title}</h3>
+  //             <h4>{car.city}</h4>
+  //             <h4>{car.price}</h4>
+  //             <a href="#"><div className="car-link-button">Buy</div></a>
+  //           </div>
+  //         </div>
+  //       </li>
+  //     )
+  //   })
+  // }
 
   render(){
-    // console.log(mockData)
+    console.log('rendering carlist cars', this.props.carlist['cars'])
     return(
       <div className="app-body">
         <NewSearch />
         <CarSearch />
         <ul>
-          {this.renderMock()}
+          {this.renderCarlist()}
         </ul>
       </div>
     )
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps({carlist}){
   return {
-    carlist: state.carlist
+    carlist
   }
 }
 
-module.exports = withRouter(connect(mapStateToProps)(CarList))
+module.exports = connect(mapStateToProps)(CarList)

@@ -1,6 +1,6 @@
 var React = require('react')
 var {withRouter} = require('react-router-dom')
-var getCars = require('./actions')
+var {getCars} = require('./actions')
 var {connect} = require('react-redux')
 
 class CarSearch extends React.Component{
@@ -15,7 +15,9 @@ class CarSearch extends React.Component{
     e.preventDefault()
     let query = this.refs.model.value
     let city = this.refs.city.value
-    this.props.dispatch(getCars(query, city))
+    //console.log(getCars(query, city))
+    //this.props.dispatch(getCars(query, city))
+    this.props.getCars(query, city)
     if(this.props.location.pathname !== 'carlist'){
       this.props.history.push('/carlist')
     }
@@ -40,4 +42,4 @@ class CarSearch extends React.Component{
 }
 
 function mapStateToProps(state){return {}}
-module.exports = withRouter(connect(mapStateToProps)(CarSearch))
+module.exports = withRouter(connect(mapStateToProps, { getCars })(CarSearch))

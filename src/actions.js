@@ -2,6 +2,9 @@ var axios = require('axios')
 
 function getCars(query, city){
   return dispatch => {
+    dispatch({
+      type: 'LOAD_CARS'
+    })
     axios.get('/cars', {
       params: {
         query: query,
@@ -9,17 +12,20 @@ function getCars(query, city){
       }
     })
     .then(response => {
-      console.log(response.data)
       return dispatch({
-        type:'LOAD_CARS',
+        type:'LOAD_CARS_SUCCESS',
         cars: response.data
       })
     })
   }
 }
 
-const getCarById = (id) => dispatch => {
-  axios.get(`/car/6130513059`)
+const getCarById = (id, city) => dispatch => {
+  axios.get(`/car/${id}?`,{
+    params:{
+      city: city
+    }
+  })
     .then(response => {
       dispatch({
         type: 'FOUNDCAR',

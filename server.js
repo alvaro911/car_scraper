@@ -72,19 +72,20 @@ app.get('/cars', (req, res)=>{
 })
 
 app.get('/car/:id', (req, res)=>{
-  console.log('id:', req.params.id);
-  let url = `https://boulder.craigslist.org/cto/`
-  // getCar(`${url}${req.params.id}.html`, (err, carData) => {
-  //   console.log(carData);
-  //   res.json(carData);
-  // })
-  const carData =  {
-    "carId": "6130513059",
-    "city": " (denver)",
-    "title": "2004 mazda 3 i sport 4D sedan",
-    "price": "$2800",
-    "img": "https://images.craigslist.org/00404_dxNBi5T9Gq8_600x450.jpg"
-  }
+  console.log('id:', req.params.id)
+  const city = req.query.city
+  let url = `https://${city}.craigslist.org/cto/`
+  getCar(`${url}${req.params.id}.html`, (err, carData) => {
+    console.log(carData);
+    res.json(carData);
+  })
+  // const carData =  {
+  //   "carId": "6130513059",
+  //   "city": " (denver)",
+  //   "title": "2004 mazda 3 i sport 4D sedan",
+  //   "price": "$2800",
+  //   "img": "https://images.craigslist.org/00404_dxNBi5T9Gq8_600x450.jpg"
+  // }
 
   res.status(200).json(carData)
 
@@ -101,15 +102,15 @@ let server
 
 function runServer(databaseUrl=DATABASE_URL, port=PORT){
   return new Promise((res, rej)=>{
-    mongoose.connect(databseUrl, err=>{
+    mongoose.connect(databaseUrl, err=>{
       if(err){
         return rej(err)
       }
       server = app.listen(port, ()=>{
-        consoe.log(`server listening to port ${port}`)
+        console.log(`server listening to port ${port}`)
         res()
       })
-      .on('Error', err=>{
+      .on('error', err=>{
         mongoose.disconnect()
         rej(err)
       })

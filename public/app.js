@@ -5306,7 +5306,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(10);
-var normalizeHeaderName = __webpack_require__(138);
+var normalizeHeaderName = __webpack_require__(139);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -7991,12 +7991,12 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(10);
-var settle = __webpack_require__(130);
-var buildURL = __webpack_require__(133);
-var parseHeaders = __webpack_require__(139);
-var isURLSameOrigin = __webpack_require__(137);
+var settle = __webpack_require__(131);
+var buildURL = __webpack_require__(134);
+var parseHeaders = __webpack_require__(140);
+var isURLSameOrigin = __webpack_require__(138);
 var createError = __webpack_require__(72);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(132);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(133);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -8092,7 +8092,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(135);
+      var cookies = __webpack_require__(136);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -8215,7 +8215,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(129);
+var enhanceError = __webpack_require__(130);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -8270,10 +8270,11 @@ var React = __webpack_require__(4);
 var _require = __webpack_require__(40),
     withRouter = _require.withRouter;
 
-var getCars = __webpack_require__(75);
+var _require2 = __webpack_require__(75),
+    getCars = _require2.getCars;
 
-var _require2 = __webpack_require__(32),
-    connect = _require2.connect;
+var _require3 = __webpack_require__(32),
+    connect = _require3.connect;
 
 var CarSearch = function (_React$Component) {
   _inherits(CarSearch, _React$Component);
@@ -8295,7 +8296,9 @@ var CarSearch = function (_React$Component) {
       e.preventDefault();
       var query = this.refs.model.value;
       var city = this.refs.city.value;
-      this.props.dispatch(getCars(query, city));
+      //console.log(getCars(query, city))
+      //this.props.dispatch(getCars(query, city))
+      this.props.getCars(query, city);
       if (this.props.location.pathname !== 'carlist') {
         this.props.history.push('/carlist');
       }
@@ -8351,7 +8354,7 @@ var CarSearch = function (_React$Component) {
 function mapStateToProps(state) {
   return {};
 }
-module.exports = withRouter(connect(mapStateToProps)(CarSearch));
+module.exports = withRouter(connect(mapStateToProps, { getCars: getCars })(CarSearch));
 
 /***/ }),
 /* 75 */
@@ -8360,28 +8363,34 @@ module.exports = withRouter(connect(mapStateToProps)(CarSearch));
 "use strict";
 
 
-var axios = __webpack_require__(123);
+var axios = __webpack_require__(124);
 
 function getCars(query, city) {
   return function (dispatch) {
+    dispatch({
+      type: 'LOAD_CARS'
+    });
     axios.get('/cars', {
       params: {
         query: query,
         city: city
       }
     }).then(function (response) {
-      console.log(response.data);
       return dispatch({
-        type: 'LOAD_CARS',
+        type: 'LOAD_CARS_SUCCESS',
         cars: response.data
       });
     });
   };
 }
 
-var getCarById = function getCarById(id) {
+var getCarById = function getCarById(id, city) {
   return function (dispatch) {
-    axios.get('/car/6130513059').then(function (response) {
+    axios.get('/car/' + id + '?', {
+      params: {
+        city: city
+      }
+    }).then(function (response) {
       dispatch({
         type: 'FOUNDCAR',
         payload: response.data
@@ -13004,7 +13013,7 @@ var CarList = function (_React$Component) {
 
   _createClass(CarList, [{
     key: 'goToCar',
-    value: function goToCar(id) {
+    value: function goToCar(id, city) {
       this.props.history.push('/car/' + id);
     }
   }, {
@@ -13012,7 +13021,18 @@ var CarList = function (_React$Component) {
     value: function renderCarlist() {
       var _this2 = this;
 
-      return this.props.carlist.map(function (car) {
+      var _props$carlist = this.props.carlist,
+          cars = _props$carlist.cars,
+          loading = _props$carlist.loading;
+
+      if (loading) {
+        return React.createElement(
+          'h1',
+          null,
+          'Loading...'
+        );
+      }
+      return cars.map(function (car) {
         return React.createElement(
           'li',
           { key: car.carId, onClick: _this2.goToCar.bind(_this2, car.carId) },
@@ -13060,59 +13080,31 @@ var CarList = function (_React$Component) {
         );
       });
     }
-  }, {
-    key: 'renderMock',
-    value: function renderMock() {
-      var _this3 = this;
 
-      return mockData.map(function (car) {
-        return React.createElement(
-          'li',
-          { key: car.carId, onClick: _this3.goToCar.bind(_this3, car.carId) },
-          React.createElement(
-            'div',
-            { className: 'car-wrapper' },
-            React.createElement(
-              'div',
-              { className: 'car-img' },
-              React.createElement('img', { src: car.img })
-            ),
-            React.createElement(
-              'div',
-              { className: 'car-info' },
-              React.createElement(
-                'h3',
-                null,
-                car.title
-              ),
-              React.createElement(
-                'h4',
-                null,
-                car.city
-              ),
-              React.createElement(
-                'h4',
-                null,
-                car.price
-              ),
-              React.createElement(
-                'a',
-                { href: '#' },
-                React.createElement(
-                  'div',
-                  { className: 'car-link-button' },
-                  'Buy'
-                )
-              )
-            )
-          )
-        );
-      });
-    }
+    // renderMock(){
+    //   return mockData.map((car) => {
+    //     return(
+    //       <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
+    //         <div className="car-wrapper">
+    //           <div className="car-img">
+    //             <img src={car.img} />
+    //           </div>
+    //           <div className="car-info">
+    //             <h3>{car.title}</h3>
+    //             <h4>{car.city}</h4>
+    //             <h4>{car.price}</h4>
+    //             <a href="#"><div className="car-link-button">Buy</div></a>
+    //           </div>
+    //         </div>
+    //       </li>
+    //     )
+    //   })
+    // }
+
   }, {
     key: 'render',
     value: function render() {
-      // console.log(mockData)
+      console.log('rendering carlist cars', this.props.carlist['cars']);
       return React.createElement(
         'div',
         { className: 'app-body' },
@@ -13121,7 +13113,7 @@ var CarList = function (_React$Component) {
         React.createElement(
           'ul',
           null,
-          this.renderMock()
+          this.renderCarlist()
         )
       );
     }
@@ -13130,16 +13122,68 @@ var CarList = function (_React$Component) {
   return CarList;
 }(React.Component);
 
-function mapStateToProps(state) {
+function mapStateToProps(_ref) {
+  var carlist = _ref.carlist;
+
   return {
-    carlist: state.carlist
+    carlist: carlist
   };
 }
 
-module.exports = withRouter(connect(mapStateToProps)(CarList));
+module.exports = connect(mapStateToProps)(CarList);
 
 /***/ }),
 /* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(4);
+
+var Header = function (_React$Component) {
+  _inherits(Header, _React$Component);
+
+  function Header() {
+    _classCallCheck(this, Header);
+
+    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+  }
+
+  _createClass(Header, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "header",
+          null,
+          React.createElement(
+            "h2",
+            { className: "hind" },
+            "CarStock"
+          )
+        )
+      );
+    }
+  }]);
+
+  return Header;
+}(React.Component);
+
+module.exports = Header;
+
+/***/ }),
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13187,7 +13231,7 @@ var Home = function (_React$Component) {
 module.exports = Home;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13211,11 +13255,13 @@ var _allReducers2 = _interopRequireDefault(_allReducers);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function configureStore(initialState) {
-    return (0, _redux.createStore)(_allReducers2.default, initialState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+    return (0, _redux.createStore)(_allReducers2.default, initialState, (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default), window.devToolsExtension ? window.devToolsExtension() : function (f) {
+        return f;
+    }));
 }
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13225,13 +13271,13 @@ module.exports = __webpack_require__(192);
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(124);
+module.exports = __webpack_require__(125);
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13239,7 +13285,7 @@ module.exports = __webpack_require__(124);
 
 var utils = __webpack_require__(10);
 var bind = __webpack_require__(73);
-var Axios = __webpack_require__(126);
+var Axios = __webpack_require__(127);
 var defaults = __webpack_require__(41);
 
 /**
@@ -13274,14 +13320,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(70);
-axios.CancelToken = __webpack_require__(125);
+axios.CancelToken = __webpack_require__(126);
 axios.isCancel = __webpack_require__(71);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(140);
+axios.spread = __webpack_require__(141);
 
 module.exports = axios;
 
@@ -13290,7 +13336,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13354,7 +13400,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13362,10 +13408,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(41);
 var utils = __webpack_require__(10);
-var InterceptorManager = __webpack_require__(127);
-var dispatchRequest = __webpack_require__(128);
-var isAbsoluteURL = __webpack_require__(136);
-var combineURLs = __webpack_require__(134);
+var InterceptorManager = __webpack_require__(128);
+var dispatchRequest = __webpack_require__(129);
+var isAbsoluteURL = __webpack_require__(137);
+var combineURLs = __webpack_require__(135);
 
 /**
  * Create a new instance of Axios
@@ -13446,7 +13492,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13505,14 +13551,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(10);
-var transformData = __webpack_require__(131);
+var transformData = __webpack_require__(132);
 var isCancel = __webpack_require__(71);
 var defaults = __webpack_require__(41);
 
@@ -13591,7 +13637,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13617,7 +13663,7 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13649,7 +13695,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13676,7 +13722,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13719,7 +13765,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13794,7 +13840,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13815,7 +13861,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13875,7 +13921,7 @@ module.exports = (
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13896,7 +13942,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13971,7 +14017,7 @@ module.exports = (
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13990,7 +14036,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14034,7 +14080,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14066,56 +14112,6 @@ module.exports = function spread(callback) {
   };
 };
 
-
-/***/ }),
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = __webpack_require__(4);
-
-var Header = function (_React$Component) {
-  _inherits(Header, _React$Component);
-
-  function Header() {
-    _classCallCheck(this, Header);
-
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-  }
-
-  _createClass(Header, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "div",
-        null,
-        React.createElement(
-          "header",
-          null,
-          React.createElement(
-            "h2",
-            { className: "hind" },
-            "CarStock"
-          )
-        )
-      );
-    }
-  }]);
-
-  return Header;
-}(React.Component);
-
-module.exports = Header;
 
 /***/ }),
 /* 142 */
@@ -14273,28 +14269,36 @@ module.exports = NewSearch;
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _require = __webpack_require__(67),
     combineReducers = _require.combineReducers;
 
+var initialState = {
+  cars: [],
+  loading: false
+};
 var carlist = function carlist() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
-  console.log(state);
   switch (action.type) {
     case 'LOAD_CARS':
-      return action.cars;
+      return _extends({}, state, {
+        loading: true
+      });
+    case 'LOAD_CARS_SUCCESS':
+      return {
+        cars: action.cars,
+        loading: false
+      };
     case 'FOUNDCAR':
-      // console.log(action.payload)
-      return { foundCar: action.payload };
+      return Object.assign(state, { foundCar: action.payload });
     default:
       return state;
   }
 };
 
-// const selectCarById = (state, id) => {
-//   return state.find(car => car.id === id)
-// }
 module.exports = combineReducers({ carlist: carlist });
 
 /***/ }),
@@ -14308,11 +14312,11 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(122);
+var _reactDom = __webpack_require__(123);
 
 var _reactRedux = __webpack_require__(32);
 
-var _store = __webpack_require__(121);
+var _store = __webpack_require__(122);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -14322,8 +14326,8 @@ var _require = __webpack_require__(40),
     HashRouter = _require.HashRouter,
     Route = _require.Route;
 
-var Header = __webpack_require__(141);
-var Home = __webpack_require__(120);
+var Header = __webpack_require__(120);
+var Home = __webpack_require__(121);
 var CarList = __webpack_require__(119);
 var Car = __webpack_require__(118);
 

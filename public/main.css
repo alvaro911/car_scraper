@@ -323,3 +323,39 @@ header{
     padding: 2em 17em 0 5em;
   }
 }
+
+@media (min-width: 1025px) and (max-width:1600px){
+  .diagonal{
+    height: 5em;
+  }
+
+  .explainer{
+    padding: 1em 11em;
+    margin-top: -32px;
+  }
+
+  .car-search{
+    padding:1em 11em;
+  }
+
+  ul{
+    width: 100%;
+    padding: 0 11em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  li{
+    width: 50%
+  }
+
+  .car-wrapper{
+    width: 92%;
+    height: 300px;
+  }
+
+  li:nth-child(even) .car-wrapper{
+    margin-left:8%;
+  }
+}
