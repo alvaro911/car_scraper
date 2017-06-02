@@ -37,7 +37,7 @@ h2, h3, h5{
 }
 
 h3{
-  font-size: 24px;
+  font-size: 1.2em;
 }
 
 ul{
@@ -154,6 +154,10 @@ header{
   flex-wrap: nowrap;
   padding:.5em 0;
   border-bottom: 1px solid rgb(99, 99, 99)
+}
+
+.car-wrapper:hover{
+  background-color: rgba(80, 80, 80, 0.07);
 }
 
 .car-img{
