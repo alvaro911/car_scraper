@@ -20,8 +20,21 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react', 'stage-0']
+          presets: ['env', 'react', 'stage-0']
         }
+      },
+      {
+        test: /\.(jpg|png)$/,
+        use:[
+          {
+            loader: 'file-loader',
+            options:{
+              name: '[name].[ext]',
+              outputPath: 'img/',
+              inputPath: 'img/'
+            }
+          }
+        ]
       }
     ]
   }

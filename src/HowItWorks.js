@@ -1,4 +1,4 @@
-var React = require('react')
+import React from 'react'
 
 class HowItWorks extends React.Component{
   render(){
@@ -7,11 +7,15 @@ class HowItWorks extends React.Component{
         <div className="diagonal"></div>
         <div className="explainer">
           <h3 className="hind">How it Works</h3>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+          <p>
+            CarStock is the ideal app to look for used cars in Colorado, all you need to do is either look for a city, or a car model, or both and you will get a list of cars matching your criteria. <br/>
+
+            Try it now!
+          </p>
         </div>
       </div>
     )
   }
 }
 
-module.exports = HowItWorks
+export default HowItWorks

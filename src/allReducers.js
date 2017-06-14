@@ -1,8 +1,10 @@
-var {combineReducers} = require('redux')
+import {combineReducers} from 'redux'
 
 const initialState = {
   cars:[],
-  loading: false
+  loading: false,
+  foundCar: {},
+  error: false
 }
 const carlist = (state=initialState, action) => {
   switch (action.type){
@@ -13,14 +15,30 @@ const carlist = (state=initialState, action) => {
       }
     case 'LOAD_CARS_SUCCESS':
       return {
+        ...state,
         cars: action.cars,
         loading: false
       }
     case 'FOUNDCAR':
-      return Object.assign(state, {foundCar: action.payload})
+      return {
+        ...state,
+        loading: true
+      }
+    case 'FOUNDCAR_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        foundCar: action.payload
+      }
+    case 'FOUNDCAR_ERROR':
+      return {
+        ...state,
+        loading: false,
+        error: true
+      }
     default:
       return state
   }
 }
 
-module.exports = combineReducers({carlist})
+export default combineReducers({carlist})

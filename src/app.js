@@ -1,13 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-var { HashRouter, Route } = require('react-router-dom')
+import { HashRouter, Route } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import configureStore from './store';
 
-const Header = require('./Header')
-const Home = require('./Home')
-const CarList = require('./CarList')
-const Car = require('./Car')
+import Header from'./Header'
+import Home from'./Home'
+import CarList from'./CarList'
+import Car from './Car'
 
 
 const store = configureStore();

@@ -1,13 +1,19 @@
-var React = require('react')
+import React from 'react'
+
+import bmw from './img/bmw.png'
+import chevy from './img/chevy.png'
+import toyota from './img/toyota.png'
 
 class Hero extends React.Component{
   render(){
+    const carsPicArr = [bmw, chevy, toyota]
+    const carPic = carsPicArr[Math.floor(Math.random()*carsPicArr.length)]
     return (
       <div className="hero-img">
-        <img src="http://www.autonews.com/apps/pbcsi.dll/storyimage/CA/20160330/OEM11/160339994/AR/0/AR-160339994.jpg"/>
+        <img src={carPic}/>
       </div>
     )
   }
 }
 
-module.exports = Hero
+export default Hero

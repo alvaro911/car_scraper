@@ -66,7 +66,10 @@ header{
   background-color: black;
   color: #ffae00;
   text-align: center;
-  font-size: 2em
+  font-size: 2em;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .hero-img{
@@ -329,6 +332,10 @@ header{
 }
 
 @media (min-width: 1025px) and (max-width:1600px){
+  .hero-img{
+    height: 100vh
+  }
+
   .diagonal{
     height: 5em;
   }
@@ -339,7 +346,7 @@ header{
   }
 
   .car-search{
-    padding:1em 11em;
+    padding:10em 11em;
   }
 
   ul{

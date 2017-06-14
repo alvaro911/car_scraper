@@ -1,17 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const async = require('async')
 const passport = require('passport')
-const BasicStrategy = require('passport-http').BasicStrategy;
+const morgan = require('morgan')
+const BasicStrategy = require('passport-http').BasicStrategy
 
 mongoose.Promise = global.Promise
 
 const {DATABASE_URL, PORT} = require('./config')
-const {getLinks, carBuilderInfo} = require('./scraper')
 const CarList = require('./models/carlists')
 const User = require('./models/user')
-const carReq = require('./request')
 
 const app = express()
 
@@ -20,7 +18,6 @@ passport.use(new BasicStrategy(
   function(username, password, callback) {
     console.log('username', username)
     console.log('password', password)
-    console.log('here');
     callback(null, {
       username: 'jason'
     })
@@ -45,49 +42,47 @@ function getUser(username, cb){
   })
 }
 
-function getCar(url, cb){
-  carReq(url, (html)=>{
-    cb(null, carBuilderInfo(html))
-  })
-}
-
-function carDb(url, city, cb){
-  carReq(url, (html) => {
-    let hrefs = getLinks(html, city)
-
-    async.mapLimit(hrefs, 10, getCar, (err, results) => {
-      CarList.create(results, err => {
-        console.log('your car list is being saved in the data base')
-        if(err) console.log(err)
-        cb(results)
-      })
-    })
-  })
-}
 
 app.get('/cars', (req, res)=>{
   const searchParam = req.query.query
   const searchCity = req.query.city
-  carDb(`https://${searchCity}.craigslist.org/search/cto?query=${searchParam}`, searchCity, carData => res.status(200).json(carData))
+  if(!searchCity){
+    CarList.find({
+      model:searchParam
+    }).then(cars => {
+      return res.status(200).json(cars)
+    }).catch(err => {
+      return res.status(400).json(err)
+    })
+  }else if(!searchParam){
+    CarList.find({
+      city:searchCity
+    }).then(cars => {
+      return res.status(200).json(cars)
+    }).catch(err => {
+      return res.status(400).json(err)
+    })
+  }else{
+    CarList.find({
+      model:searchParam,
+      city:searchCity
+    }).then(cars => {
+      return res.status(200).json(cars)
+    }).catch(err => {
+      return res.status(400).json(err)
+    })
+  }
 })
 
 app.get('/car/:id', (req, res)=>{
-  console.log('id:', req.params.id)
-  const city = req.query.city
-  let url = `https://${city}.craigslist.org/cto/`
-  getCar(`${url}${req.params.id}.html`, (err, carData) => {
-    console.log(carData);
-    res.json(carData);
+  CarList.findOne({
+    _id:req.params.id
+  }).then(car => {
+    console.log(res.json(car))
+    return res.status(200).json(car)
+  }).catch(err => {
+    return res.status(404).json(err)
   })
-  // const carData =  {
-  //   "carId": "6130513059",
-  //   "city": " (denver)",
-  //   "title": "2004 mazda 3 i sport 4D sedan",
-  //   "price": "$2800",
-  //   "img": "https://images.craigslist.org/00404_dxNBi5T9Gq8_600x450.jpg"
-  // }
-
-  res.status(200).json(carData)
 
 })
 
@@ -135,5 +130,7 @@ function closeServer(){
 if(require.main === module){
   runServer().catch(err => console.error(err))
 }
+//
+// app.listen(PORT, ()=> console.log(`Server listening to port: ${PORT}`))
 
 module.exports = {app, runServer, closeServer}

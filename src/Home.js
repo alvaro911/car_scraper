@@ -1,8 +1,8 @@
-var React = require('react')
+import React from 'react'
 
-var Hero = require('./Hero')
-var HowItWorks = require('./HowItWorks')
-var CarSearch = require('./CarSearch')
+import Hero from './Hero'
+import HowItWorks from './HowItWorks'
+import CarSearch from './CarSearch'
 
 class Home extends React.Component{
   render(){
@@ -16,4 +16,4 @@ class Home extends React.Component{
   }
 }
 
-module.exports = Home
+export default Home

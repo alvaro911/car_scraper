@@ -1,50 +1,50 @@
-var React = require('react')
-var {connect} = require('react-redux')
-const { getCarById } = require('./actions')
+import React from 'react'
+import {connect} from 'react-redux'
+import { getCarById } from './actions'
 
 class Car extends React.Component{
   componentDidMount() {
-    this.props.getCarById(12344)
+    this.props.getCarById(this.props.match.params.id)
   }
   render(){
-    if (this.props.foundCar){
-      return (
-        <div className="car">
-          <div className="banner-info">
-            <div className="values">
-              <h5>Price</h5>
-              <h2>{this.props.foundCar['price']}</h2>
-            </div>
-            <div className="values">
-              <h5>Mileage</h5>
-              <h2>123000 Mi</h2>
-            </div>
-          </div>
-          <div className="car-picture">
-            <img src={this.props.foundCar['img']} />
-          </div>
-          <div className="car-elements">
-            <h2>{this.props.foundCar['title']}</h2>
-            <a href="#"><div className="car-link-button">
-              Go
-            </div></a>
-          </div>
+    if(this.props.data.loading && !this.props.data.foundCar){
+      return(
+        <div>
+          Loading!!!
         </div>
       )
     }
-    return(
-      <div>
-        Loading!!!
+    return (
+      <div className="car">
+        <div className="banner-info">
+          <div className="values">
+            <h5>Price</h5>
+            <h2>{this.props.data.foundCar.price}</h2>
+          </div>
+          <div className="values">
+            <h5></h5>
+            <h2>{this.props.data.foundCar.title}</h2>
+          </div>
+        </div>
+        <div className="car-picture">
+          <img src={this.props.data.foundCar.img} />
+        </div>
+        <div className="car-elements">
+          <a href={this.props.data.foundCar.link}><div className="car-link-button">
+            Go
+          </div></a>
+        </div>
       </div>
     )
   }
 }
 
-function mapStateToProps({carlist}){
-  const { foundCar } = carlist;
-  return { foundCar }
+function mapStateToProps(state){
+  return {
+    data: state.carlist
+  }
 }
 
-module.exports = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
   getCarById,
 })(Car)

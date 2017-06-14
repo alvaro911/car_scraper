@@ -1,14 +1,14 @@
-var React = require('react')
-var {withRouter} = require('react-router-dom')
-var {connect} = require('react-redux')
+import React from 'react'
+import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
+import ReactPaginate from 'react-paginate'
 
-var NewSearch = require('./NewSearch')
-var CarSearch = require('./CarSearch')
-var mockData = require('./mock-data')
+import CarSearch from './CarSearch'
 
 class CarList extends React.Component{
 
-  goToCar(id, city){
+  goToCar(id){
+    console.log(id)
     this.props.history.push(`/car/${id}`)
   }
 
@@ -19,7 +19,7 @@ class CarList extends React.Component{
     }
     return cars.map(car => {
       return (
-        <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
+        <li key={car._id}>
           <div className="car-wrapper">
             <div className="car-img">
               <img src={car.img} />
@@ -29,7 +29,7 @@ class CarList extends React.Component{
               <h4>{car.city}</h4>
               <h4>{car.price}</h4>
               <div className="buttons">
-                <a href="#"><div className="car-link-button">Buy</div></a>
+                <div className="car-link-button" onClick={this.goToCar.bind(this, car._id)}>Info</div>
               </div>
             </div>
           </div>
@@ -38,31 +38,10 @@ class CarList extends React.Component{
     })
   }
 
-  // renderMock(){
-  //   return mockData.map((car) => {
-  //     return(
-  //       <li key={car.carId} onClick={this.goToCar.bind(this, car.carId)}>
-  //         <div className="car-wrapper">
-  //           <div className="car-img">
-  //             <img src={car.img} />
-  //           </div>
-  //           <div className="car-info">
-  //             <h3>{car.title}</h3>
-  //             <h4>{car.city}</h4>
-  //             <h4>{car.price}</h4>
-  //             <a href="#"><div className="car-link-button">Buy</div></a>
-  //           </div>
-  //         </div>
-  //       </li>
-  //     )
-  //   })
-  // }
-
   render(){
     console.log('rendering carlist cars', this.props.carlist['cars'])
     return(
       <div className="app-body">
-        <NewSearch />
         <CarSearch />
         <ul>
           {this.renderCarlist()}
@@ -78,4 +57,4 @@ function mapStateToProps({carlist}){
   }
 }
 
-module.exports = connect(mapStateToProps)(CarList)
+export default withRouter(connect(mapStateToProps)(CarList))

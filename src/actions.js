@@ -1,6 +1,6 @@
-var axios = require('axios')
+import axios from 'axios'
 
-function getCars(query, city){
+export const getCars = (query, city) => {
   return dispatch => {
     dispatch({
       type: 'LOAD_CARS'
@@ -16,22 +16,32 @@ function getCars(query, city){
         type:'LOAD_CARS_SUCCESS',
         cars: response.data
       })
+    }).catch(err => {
+      console.log(err);
     })
   }
 }
 
-const getCarById = (id, city) => dispatch => {
-  axios.get(`/car/${id}?`,{
-    params:{
-      city: city
-    }
-  })
+export const getCarById = (id) => {
+  return dispatch => {
+    dispatch({
+      type: 'FOUNDCAR'
+    })
+    axios.get(`/car/${id}`,{
+      params:{
+        _id: id
+      }
+    })
     .then(response => {
       dispatch({
-        type: 'FOUNDCAR',
+        type: 'FOUNDCAR_SUCCESS',
         payload: response.data
       })
+    }).catch(err => {
+      dispatch({
+        type: 'FOUNDCAR_ERROR'
+      })
+      console.log(err);
     })
+  }
 }
-
-module.exports = {getCars, getCarById}
