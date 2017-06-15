@@ -17,6 +17,7 @@ function mockCarData(){
   for(let i=1; i<=10; i++){
     mockData.push(generateCarData())
   }
+  return mockData
 }
 
 function getCity(){
@@ -53,13 +54,14 @@ function disconnectDb(){
 }
 
 describe('Used cars API resource', function(){
+  let mockResults;
 
   before(function(){
     return runServer(TEST_DATABASE_URL)
   })
 
   beforeEach(function(){
-    return mockCarData()
+    return mockResults = mockCarData()
   })
 
   afterEach(function(){
@@ -86,16 +88,27 @@ describe('Used cars API resource', function(){
         })
     })
 
-    it('Should get a list of cars depending on the city', function(done){
-      let resCars
+    it.only('Should get a list of cars depending on the city', function(done){
       return chai.request(app)
         .get('/cars')
+        .query({city: 'denver'})
+        .end(function(err, res){
+          res.should.have.status(200)
+          done()
+        })
+    })
+
+    it('Should return a single car with the correct fields', function() {
+      // const car = new Car({
+      //   id: '6129109136',
+      //   city: "colorado springs",
+      //   model:"VW"
+      // })
+      console.log("+++++++++++++++++++++++++++++++")
+      return chai.request(app)
+        .get('/car/6129109136')
         .then(function(res){
-          resCars = res.body.carlist[0]
-          Carlist.find(resCars.model)
-            .then(function(car){
-              resCars.should.be.a('array')
-            })
+          console.log(res.body)
         })
     })
   })

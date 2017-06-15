@@ -6,6 +6,11 @@ class Car extends React.Component{
   componentDidMount() {
     this.props.getCarById(this.props.match.params.id)
   }
+
+  goBack(){
+    window.history.back()
+  }
+
   render(){
     if(this.props.data.loading && !this.props.data.foundCar){
       return(
@@ -33,6 +38,7 @@ class Car extends React.Component{
             <article>
               {this.props.data.foundCar.paragraph}
             </article>
+            <button className="go-back" onClick={this.goBack.bind(this)}>Go Back</button>
             <a href={this.props.data.foundCar.link} target="_blank"><div className="car-link-button">
               Go
             </div></a>

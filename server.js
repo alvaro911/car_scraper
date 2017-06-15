@@ -46,10 +46,11 @@ function getUser(username, cb){
 app.get('/cars', (req, res)=>{
   const searchParam = req.query.query
   const searchCity = req.query.city
+  console.log(searhCity);
   if(!searchCity){
     CarList.find({
       model:searchParam
-    }).then(cars => {
+    }).exec().then(cars => {
       return res.status(200).json(cars)
     }).catch(err => {
       return res.status(400).json(err)
@@ -78,7 +79,6 @@ app.get('/car/:id', (req, res)=>{
   CarList.findOne({
     _id:req.params.id
   }).then(car => {
-    console.log(res.json(car))
     return res.status(200).json(car)
   }).catch(err => {
     return res.status(404).json(err)

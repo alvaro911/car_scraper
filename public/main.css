@@ -215,6 +215,17 @@ header{
   margin-bottom: 1.3em;
 }
 
+.go-back{
+  background-color: #505050;
+  border: 0;
+  height: 30px;
+  color: white;
+  margin-bottom: 1.3em;
+  font-size: .8em;
+  width: 50%;
+  cursor: pointer;
+}
+
 .car-link-button{
   width: 100%;
   padding: 1em 0;
@@ -235,8 +246,6 @@ header{
 
 footer{
   width: 100%;
-  position:absolute;
-  bottom: 0;
   background-color: black;
   color: #505050;
   font-size: .7em;
@@ -396,6 +405,10 @@ footer a{
     height: 100vh
   }
 
+  .hero-img img{
+    margin-top:0;
+  }
+
   .diagonal{
     height: 5em;
   }
@@ -451,5 +464,9 @@ footer a{
 
   .values{
     padding-left: 2em;
+  }
+
+  .go-back{
+    width:15%;
   }
 }

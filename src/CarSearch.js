@@ -13,8 +13,8 @@ class CarSearch extends React.Component{
 
   startSearch(e){
     e.preventDefault()
-    let query = this.refs.model.value
-    let city = this.refs.city.value
+    let query = this.refs.model.value.toLowerCase()
+    let city = this.refs.city.value.toLowerCase()
     this.props.getCars(query, city)
     if(this.props.location.pathname !== 'carlist'){
       this.props.history.push('/carlist')
