@@ -8,6 +8,7 @@ import Header from'./Header'
 import Home from'./Home'
 import CarList from'./CarList'
 import Car from './Car'
+import Footer from './Footer'
 
 
 const store = configureStore();
@@ -20,6 +21,7 @@ render(
           <Route exact path='/' component={Home}/>
           <Route path='/carlist' component={CarList}/>
           <Route path='/car/:id' component={Car}/>
+          <Footer />
         </div>
       </HashRouter>
     </Provider>,

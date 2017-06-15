@@ -18,21 +18,25 @@ class Car extends React.Component{
       <div className="car">
         <div className="banner-info">
           <div className="values">
+            <h2>{this.props.data.foundCar.title}</h2>
+          </div>
+          <div className="values">
             <h5>Price</h5>
             <h2>{this.props.data.foundCar.price}</h2>
           </div>
-          <div className="values">
-            <h5></h5>
-            <h2>{this.props.data.foundCar.title}</h2>
+        </div>
+        <div className="car-display">
+          <div className="car-picture">
+            <img src={this.props.data.foundCar.img} />
           </div>
-        </div>
-        <div className="car-picture">
-          <img src={this.props.data.foundCar.img} />
-        </div>
-        <div className="car-elements">
-          <a href={this.props.data.foundCar.link}><div className="car-link-button">
-            Go
-          </div></a>
+          <div className="car-elements">
+            <article>
+              {this.props.data.foundCar.paragraph}
+            </article>
+            <a href={this.props.data.foundCar.link} target="_blank"><div className="car-link-button">
+              Go
+            </div></a>
+          </div>
         </div>
       </div>
     )

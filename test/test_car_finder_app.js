@@ -3,13 +3,13 @@ const chaiHttp = require('chai-http')
 const faker = require('faker')
 const mongoose = require('mongoose')
 
-const should = chai.shoudl()
+const should = chai.should()
 
-const {Carlist} = require('../models/carlists')
+const CarList = require('../models/carlists')
 const {app, runServer, closeServer} = require('../server')
 const {TEST_DATABASE_URL} = require('../config')
 
-chai.use(http)
+chai.use(chaiHttp)
 
 function mockCarData(){
   console.log('generating mock data')
@@ -19,19 +19,37 @@ function mockCarData(){
   }
 }
 
+function getCity(){
+  const coCities = ['pueblo', 'greeley', 'sterling', 'northern colorado', 'colorado springs', 'aspen', 'west vail', 'jefferson', 'silverthorne']
+  return coCities[Math.floor(Math.random() * coCities.length)]
+}
+
+function getCar(){
+  const carModels = ['mitsubishi', 'toyota', 'jeep', 'hyundai', 'Volkswagen', 'Chevrolet']
+  return carModels[Math.floor(Math.random() * carModels.length)]
+}
+
+function getId(){
+  const ids = ['6129109136', '6153147300', '6141862088', '6176475959', '6147462550', '6173812108', '6141435502', '6144468918', '6172176671']
+  return ids[Math.floor(Math.random() * ids.length)]
+}
+
 function generateCarData(){
-  return{
-    carId:faker.random.uuid(),
-    city:faker.address.city(),
-    title:faker.lorem.sentence(),
-    price:faker.commerce.price(),
-    img:faker.image.imageUrl()
+  return {
+    _id: getId(),
+    city: getCity(),
+    title: faker.lorem.sentence(),
+    price: faker.commerce.price(),
+    img: faker.image.imageUrl(),
+    model: getCar(),
+    link: faker.internet.url(),
+    paragraph: faker.lorem.paragraph()
   }
 }
 
-function tearDownDb(){
-  console.log('tear down database')
-  return mongoose.disconnect.dropDatabase()
+function disconnectDb(){
+  console.log('Disconnect from database')
+  return mongoose.disconnect()
 }
 
 describe('Used cars API resource', function(){
@@ -45,79 +63,40 @@ describe('Used cars API resource', function(){
   })
 
   afterEach(function(){
-    return tearDownDb()
+    return disconnectDb()
   })
 
   after(function(){
     return closeServer()
   })
 
-  describe('GET carlist endpoint', function(){
-    it('should return a list of cars using models submitted by the user and the city they are looking for', function(){
-      // should get a status of 2 handred and list should be as long as cars in the db
-      //
+  describe('GET cars end point', function(){
+    it('Should return the length of the database', function(){
       let res
       return chai.request(app)
-        .get('/carlist')
-          .then(function(_res){
-            res = _res
-            res.should.have.status(200)
-            res.body.carlist.should.have.length.of.at.least(1)
-            return Carlist.count()
-          })
-          .then(function(count){
-            res.body.carlist.should.have.length.of(count)
-          })
-    })
-
-    it('should return carlist with the right fields', function(){
-      let resCarlist
-      return chai.request(app)
-        .get('/carlist')
-          .then(function(res){
-            res.should.be.json
-            res.body.carlist.should.be.a('array')
-            res.body.carlist.should.have.length.of.at.least(1)
-
-            res.body.carlist.forEach(function(car){
-              car.should.be.a('object')
-              car.should.include.keys('id', 'carId', 'city', 'title', 'price', 'img')
+        .get('/cars')
+        .then(function(_res){
+          res = _res
+          res.should.have.status(200)
+          res.should.be.json
+          CarList.count()
+            .then(function(count){
+              res.body.carlist.should.have.length.of(count)
             })
-            resCarlist = res.body.carlist[0]
-            return Carlist.findById(resCarlist.id)
-          })
-          .then(function(car){
-            resCarlist.id.should.equal(car.id)
-            resCarlist.carId.should.equal(car.carId)
-            resCarlist.city.should.equal(car.city)
-            resCarlist.title.should.equal(car.title)
-            resCarlist.price.should.equal(car.price)
-            resCarlist.img.should.equal(car.img)
-          })
-
+        })
     })
 
-    describe('GET car by id endpoing' function(){
-      it('should get a car using it\'s unique carid', function(){
-        return chai.request(app)
-          let res, resCar
-          .get('/car/:id')
-          .then(function(_res){
-            res = _res
-            res.should.have.status(200)
-            res.should.be.json
-            resCar = res.body.carlist[0]
-            return Carlist.findById(resCarlist.id)
-          })
-          .then(function(car){
-            resCar.id.should.equal(car.id)
-            resCar.carId.should.equal(car.carId)
-            resCar.city.should.equal(car.city)
-            resCar.title.should.equal(car.title)
-            resCar.price.should.equal(car.price)
-            resCar.img.should.equal(car.img)
-          })
-      })
+    it('Should get a list of cars depending on the city', function(done){
+      let resCars
+      return chai.request(app)
+        .get('/cars')
+        .then(function(res){
+          resCars = res.body.carlist[0]
+          Carlist.find(resCars.model)
+            .then(function(car){
+              resCars.should.be.a('array')
+            })
+        })
     })
   })
 })

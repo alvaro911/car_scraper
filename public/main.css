@@ -78,6 +78,10 @@ header{
   overflow: hidden;
 }
 
+.hero-img img{
+  margin-top: 9em;
+}
+
 .how-it-works{
   width: 100%;
   height: auto;
@@ -159,10 +163,6 @@ header{
   border-bottom: 1px solid rgb(99, 99, 99)
 }
 
-.car-wrapper:hover{
-  background-color: rgba(80, 80, 80, 0.07);
-}
-
 .car-img{
   width:45%;
   height: 150px;
@@ -184,6 +184,7 @@ header{
 
 .banner-info{
   width: 100%;
+  margin-top: 6.4em;
   height: auto;
   padding: 1em .7em;
   display: flex;
@@ -206,7 +207,12 @@ header{
 
 .car-elements{
   width: 100%;
-  padding: 1em .7em;
+  padding: 1em .7em 2em;
+}
+
+.car-elements article{
+  line-height: 1.7;
+  margin-bottom: 1.3em;
 }
 
 .car-link-button{
@@ -227,10 +233,32 @@ header{
   color: white;
 }
 
+footer{
+  width: 100%;
+  position:absolute;
+  bottom: 0;
+  background-color: black;
+  color: #505050;
+  font-size: .7em;
+  padding:1em;
+}
+
+footer a{
+  color: #ffae00;
+}
+
 /* iPhone 7S plus */
 @media (min-width: 414px) and (max-width: 736px) and (orientation: landscape){
   header{
     padding: 0;
+  }
+
+  .hero-img img{
+    margin-top: 4em;
+  }
+
+  .banner-info{
+    margin-top: 4.8em;
   }
 
   .hero-img{
@@ -238,12 +266,12 @@ header{
   }
 
   .explainer{
-    margin-top: -45px;
+    margin-top: -18px;
     padding: 0 3em 1em;
   }
 
   .car-search{
-    padding: 1em 3em;
+    padding: 3em 3em 2em;
   }
 
   ul{
@@ -253,9 +281,29 @@ header{
   .car-picture{
     height: 80vh;
   }
-
-
 }
+
+/* iPhone 5 */
+@media (min-width:320px) and (max-width:568px) and (orientation:portrait){
+  .car-search{
+    padding: 8em 1em 2em;
+  }
+
+  .banner-info{
+    margin-top: 6.4em;
+  }
+}
+
+@media (min-width:320px) and (max-width:568px) and (orientation:landscape){
+  .car-search{
+    padding:7em 3em 2em;
+  }
+
+  .banner-info{
+    margin-top: 4.8em;
+  }
+}
+
 
 /* iPhone 7S */
 @media (min-width: 375px) and (max-width: 667px) and (orientation: landscape){
@@ -271,8 +319,12 @@ header{
     margin-top: -18px
   }
 
+  .hero-img img{
+    margin-top: 8em;
+  }
+
   .car-search{
-    padding: 3em;
+    padding: 8em 3em 2em;
   }
 
   ul{
@@ -297,6 +349,10 @@ header{
     height: 80vh;
   }
 
+  .hero-img img{
+    margin-top:4em;
+  }
+
   .diagonal{
     height: 6em;
   }
@@ -311,7 +367,7 @@ header{
   }
 
   .car-search{
-    padding: 2em 7em;
+    padding: 8em 7em 1;
   }
 
   .car-wrapper{
@@ -327,7 +383,11 @@ header{
   }
 
   .car-elements{
-    padding: 2em 17em 0 5em;
+    padding: 2em 17em 2em 5em;
+  }
+
+  .values{
+    padding-left: 3.5em;
   }
 }
 
@@ -346,7 +406,7 @@ header{
   }
 
   .car-search{
-    padding:10em 11em;
+    padding:10em 11em 3em;
   }
 
   ul{
@@ -368,5 +428,28 @@ header{
 
   li:nth-child(even) .car-wrapper{
     margin-left:8%;
+  }
+
+  .car-display{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .car-picture, .car-elements{
+    width: 50%;
+  }
+
+  .car-picture{
+    height: auto;
+  }
+
+  .car-elements{
+    padding: 1em 2em 2em;
+  }
+
+  .values{
+    padding-left: 2em;
   }
 }

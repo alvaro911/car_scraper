@@ -12929,6 +12929,15 @@ var Car = function (_React$Component) {
             'div',
             { className: 'values' },
             _react2.default.createElement(
+              'h2',
+              null,
+              this.props.data.foundCar.title
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'values' },
+            _react2.default.createElement(
               'h5',
               null,
               'Price'
@@ -12938,33 +12947,32 @@ var Car = function (_React$Component) {
               null,
               this.props.data.foundCar.price
             )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'values' },
-            _react2.default.createElement('h5', null),
-            _react2.default.createElement(
-              'h2',
-              null,
-              this.props.data.foundCar.title
-            )
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'car-picture' },
-          _react2.default.createElement('img', { src: this.props.data.foundCar.img })
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'car-elements' },
+          { className: 'car-display' },
           _react2.default.createElement(
-            'a',
-            { href: this.props.data.foundCar.link },
+            'div',
+            { className: 'car-picture' },
+            _react2.default.createElement('img', { src: this.props.data.foundCar.img })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'car-elements' },
             _react2.default.createElement(
-              'div',
-              { className: 'car-link-button' },
-              'Go'
+              'article',
+              null,
+              this.props.data.foundCar.paragraph
+            ),
+            _react2.default.createElement(
+              'a',
+              { href: this.props.data.foundCar.link, target: '_blank' },
+              _react2.default.createElement(
+                'div',
+                { className: 'car-link-button' },
+                'Go'
+              )
             )
           )
         )
@@ -14354,6 +14362,10 @@ var _Car = __webpack_require__(118);
 
 var _Car2 = _interopRequireDefault(_Car);
 
+var _Footer = __webpack_require__(310);
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _store2.default)();
@@ -14370,7 +14382,8 @@ var store = (0, _store2.default)();
       _react2.default.createElement(_Header2.default, null),
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/carlist', component: _CarList2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/car/:id', component: _Car2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/car/:id', component: _Car2.default }),
+      _react2.default.createElement(_Footer2.default, null)
     )
   )
 ), document.getElementById('app'));
@@ -32626,6 +32639,61 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Footer = function (_React$Component) {
+  _inherits(Footer, _React$Component);
+
+  function Footer() {
+    _classCallCheck(this, Footer);
+
+    return _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).apply(this, arguments));
+  }
+
+  _createClass(Footer, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "footer",
+        null,
+        "Look at my project on ",
+        _react2.default.createElement(
+          "a",
+          { href: "https://www.github.com/alvaro911/car_scraper", target: "_blank" },
+          " GitHub"
+        )
+      );
+    }
+  }]);
+
+  return Footer;
+}(_react2.default.Component);
+
+exports.default = Footer;
 
 /***/ })
 /******/ ]);
