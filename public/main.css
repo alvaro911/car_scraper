@@ -244,6 +244,11 @@ header{
   color: white;
 }
 
+.cant-find{
+  color: #505050;
+  margin: 0 auto 5.7em;
+}
+
 footer{
   width: 100%;
   background-color: black;

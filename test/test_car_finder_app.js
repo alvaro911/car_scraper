@@ -20,25 +20,15 @@ function mockCarData(){
   return mockData
 }
 
-function getCity(){
-  const coCities = ['pueblo', 'greeley', 'sterling', 'northern colorado', 'colorado springs', 'aspen', 'west vail', 'jefferson', 'silverthorne']
-  return coCities[Math.floor(Math.random() * coCities.length)]
-}
-
 function getCar(){
-  const carModels = ['mitsubishi', 'toyota', 'jeep', 'hyundai', 'Volkswagen', 'Chevrolet']
+  const carModels = ['toyota', 'nissan', 'mitsubishi', 'honda', 'bmw']
   return carModels[Math.floor(Math.random() * carModels.length)]
-}
-
-function getId(){
-  const ids = ['6129109136', '6153147300', '6141862088', '6176475959', '6147462550', '6173812108', '6141435502', '6144468918', '6172176671']
-  return ids[Math.floor(Math.random() * ids.length)]
 }
 
 function generateCarData(){
   return {
-    _id: getId(),
-    city: getCity(),
+    _id: faker.random.uuid(),
+    city: faker.address.city(),
     title: faker.lorem.sentence(),
     price: faker.commerce.price(),
     img: faker.image.imageUrl(),
@@ -89,26 +79,12 @@ describe('Used cars API resource', function(){
     })
 
     it.only('Should get a list of cars depending on the city', function(){
-
       return chai.request(app)
         .get('/cars')
         .query({city: 'denver'})
         .then(function(res){
           res.should.have.status(200)
-        })
-    })
-
-    it('Should return a single car with the correct fields', function() {
-      // const car = new Car({
-      //   id: '6129109136',
-      //   city: "colorado springs",
-      //   model:"VW"
-      // })
-      console.log("+++++++++++++++++++++++++++++++")
-      return chai.request(app)
-        .get('/car/6129109136')
-        .then(function(res){
-          console.log(res.body)
+          res.body.should.be.a('array')
         })
     })
   })

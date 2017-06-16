@@ -28,7 +28,7 @@ class CarSearch extends React.Component{
         <form onSubmit={this.startSearch.bind(this)}>
           <label>City</label><br/>
           <input type="text" ref="city" placeholder="city"/>
-          <label>Model</label><br/>
+          <label>Make</label><br/>
           <input type="text" ref="model" placeholder="model"/>
           <button type="submit">Search</button>
         </form>

@@ -42,7 +42,6 @@ function getUser(username, cb){
   })
 }
 
-
 app.get('/cars', (req, res)=>{
   const searchParam = req.query.query
   const searchCity = req.query.city

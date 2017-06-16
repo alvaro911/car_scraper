@@ -8,7 +8,9 @@ class HowItWorks extends React.Component{
         <div className="explainer">
           <h3 className="hind">How it Works</h3>
           <p>
-            CarStock is the ideal app to look for used cars in Colorado, all you need to do is either look for a city, or a car model, or both and you will get a list of cars matching your criteria. <br/>
+            CarStock finds your ideal used car in Colorado. <br />
+            all you need to do is eithr provide the city, or a car make, or both. <br />
+            And you will get a list of cars matching your exact criteria. <br/>
 
             Try it now!
           </p>
