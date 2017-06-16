@@ -13070,50 +13070,57 @@ var CarList = function (_React$Component) {
           null,
           'Loading...'
         );
-      }
-      return cars.map(function (car) {
+      } else if (cars === null) {
         return _react2.default.createElement(
-          'li',
-          { key: car._id },
-          _react2.default.createElement(
-            'div',
-            { className: 'car-wrapper' },
+          'h2',
+          null,
+          'Sorry we don\'t matches in the database'
+        );
+      } else {
+        return cars.map(function (car) {
+          return _react2.default.createElement(
+            'li',
+            { key: car._id },
             _react2.default.createElement(
               'div',
-              { className: 'car-img' },
-              _react2.default.createElement('img', { src: car.img })
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'car-info' },
+              { className: 'car-wrapper' },
               _react2.default.createElement(
-                'h3',
-                null,
-                car.title
-              ),
-              _react2.default.createElement(
-                'h4',
-                null,
-                car.city
-              ),
-              _react2.default.createElement(
-                'h4',
-                null,
-                car.price
+                'div',
+                { className: 'car-img' },
+                _react2.default.createElement('img', { src: car.img })
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'buttons' },
+                { className: 'car-info' },
+                _react2.default.createElement(
+                  'h3',
+                  null,
+                  car.title
+                ),
+                _react2.default.createElement(
+                  'h4',
+                  null,
+                  car.city
+                ),
+                _react2.default.createElement(
+                  'h4',
+                  null,
+                  car.price
+                ),
                 _react2.default.createElement(
                   'div',
-                  { className: 'car-link-button', onClick: _this2.goToCar.bind(_this2, car._id) },
-                  'Info'
+                  { className: 'buttons' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'car-link-button', onClick: _this2.goToCar.bind(_this2, car._id) },
+                    'Info'
+                  )
                 )
               )
             )
-          )
-        );
-      });
+          );
+        });
+      }
     }
   }, {
     key: 'render',
@@ -14430,6 +14437,10 @@ var _Footer = __webpack_require__(120);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
+var _ScrollToTop = __webpack_require__(310);
+
+var _ScrollToTop2 = _interopRequireDefault(_ScrollToTop);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _store2.default)();
@@ -14441,13 +14452,17 @@ var store = (0, _store2.default)();
     _reactRouterDom.HashRouter,
     null,
     _react2.default.createElement(
-      'div',
-      { className: 'app' },
-      _react2.default.createElement(_Header2.default, null),
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/carlist', component: _CarList2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/car/:id', component: _Car2.default }),
-      _react2.default.createElement(_Footer2.default, null)
+      _ScrollToTop2.default,
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'app' },
+        _react2.default.createElement(_Header2.default, null),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/carlist', component: _CarList2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { path: '/car/:id', component: _Car2.default }),
+        _react2.default.createElement(_Footer2.default, null)
+      )
     )
   )
 ), document.getElementById('app'));
@@ -32703,6 +32718,61 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(41);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ScrollToTop = function (_Component) {
+  _inherits(ScrollToTop, _Component);
+
+  function ScrollToTop() {
+    _classCallCheck(this, ScrollToTop);
+
+    return _possibleConstructorReturn(this, (ScrollToTop.__proto__ || Object.getPrototypeOf(ScrollToTop)).apply(this, arguments));
+  }
+
+  _createClass(ScrollToTop, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.location !== prevProps.location) {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return this.props.children;
+    }
+  }]);
+
+  return ScrollToTop;
+}(_react.Component);
+
+exports.default = (0, _reactRouterDom.withRouter)(ScrollToTop);
 
 /***/ })
 /******/ ]);

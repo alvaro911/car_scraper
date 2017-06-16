@@ -88,13 +88,13 @@ describe('Used cars API resource', function(){
         })
     })
 
-    it.only('Should get a list of cars depending on the city', function(done){
+    it.only('Should get a list of cars depending on the city', function(){
+
       return chai.request(app)
         .get('/cars')
         .query({city: 'denver'})
-        .end(function(err, res){
+        .then(function(res){
           res.should.have.status(200)
-          done()
         })
     })
 

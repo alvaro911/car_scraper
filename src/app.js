@@ -9,6 +9,7 @@ import Home from'./Home'
 import CarList from'./CarList'
 import Car from './Car'
 import Footer from './Footer'
+import ScrollToTop from './ScrollToTop'
 
 
 const store = configureStore();
@@ -16,13 +17,15 @@ const store = configureStore();
 render(
     <Provider store={store}>
       <HashRouter>
-        <div className="app">
-          <Header />
-          <Route exact path='/' component={Home}/>
-          <Route path='/carlist' component={CarList}/>
-          <Route path='/car/:id' component={Car}/>
-          <Footer />
-        </div>
+        <ScrollToTop>
+          <div className="app">
+            <Header />
+            <Route exact path='/' component={Home}/>
+            <Route path='/carlist' component={CarList}/>
+            <Route path='/car/:id' component={Car}/>
+            <Footer />
+          </div>
+        </ScrollToTop>
       </HashRouter>
     </Provider>,
     document.getElementById('app')

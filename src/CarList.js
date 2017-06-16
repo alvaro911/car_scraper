@@ -16,26 +16,31 @@ class CarList extends React.Component{
     const { cars, loading } = this.props.carlist
     if(loading){
       return <h1>Loading...</h1>
-    }
-    return cars.map(car => {
+    }else if(cars === null){
       return (
-        <li key={car._id}>
-          <div className="car-wrapper">
-            <div className="car-img">
-              <img src={car.img} />
-            </div>
-            <div className="car-info">
-              <h3>{car.title}</h3>
-              <h4>{car.city}</h4>
-              <h4>{car.price}</h4>
-              <div className="buttons">
-                <div className="car-link-button" onClick={this.goToCar.bind(this, car._id)}>Info</div>
+        <h2>Sorry we don't matches in the database</h2>
+      )
+    }else{
+      return cars.map(car => {
+        return (
+          <li key={car._id}>
+            <div className="car-wrapper">
+              <div className="car-img">
+                <img src={car.img} />
+              </div>
+              <div className="car-info">
+                <h3>{car.title}</h3>
+                <h4>{car.city}</h4>
+                <h4>{car.price}</h4>
+                <div className="buttons">
+                  <div className="car-link-button" onClick={this.goToCar.bind(this, car._id)}>Info</div>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-      )
-    })
+          </li>
+        )
+      })
+    }
   }
 
   render(){

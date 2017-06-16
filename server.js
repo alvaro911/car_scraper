@@ -46,21 +46,22 @@ function getUser(username, cb){
 app.get('/cars', (req, res)=>{
   const searchParam = req.query.query
   const searchCity = req.query.city
-  console.log(searhCity);
   if(!searchCity){
     CarList.find({
       model:searchParam
-    }).exec().then(cars => {
+    }).then(cars => {
       return res.status(200).json(cars)
     }).catch(err => {
       return res.status(400).json(err)
     })
   }else if(!searchParam){
     CarList.find({
-      city:searchCity
-    }).then(cars => {
+      city: searchCity
+    })
+    .then(cars => {
       return res.status(200).json(cars)
-    }).catch(err => {
+    })
+    .catch(err => {
       return res.status(400).json(err)
     })
   }else{
@@ -92,6 +93,10 @@ app.post("/login"
         failureRedirect : "/login",
     })
 );
+
+app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, 'index.html'));
+  })
 
 let server
 
@@ -132,5 +137,7 @@ if(require.main === module){
 }
 //
 // app.listen(PORT, ()=> console.log(`Server listening to port: ${PORT}`))
+//
+
 
 module.exports = {app, runServer, closeServer}
