@@ -9,7 +9,7 @@ class HowItWorks extends React.Component{
           <h3 className="hind">How it Works</h3>
           <p>
             CarStock finds your ideal used car in Colorado. <br />
-            all you need to do is eithr provide the city, or a car make, or both. <br />
+          All you need to do is eiter provide the city, or a car make, or both. <br />
             And you will get a list of cars matching your exact criteria. <br/>
 
             Try it now!
