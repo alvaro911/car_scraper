@@ -9,32 +9,12 @@ mongoose.Promise = global.Promise
 
 const {DATABASE_URL, PORT} = require('./config')
 const CarList = require('./models/carlists')
-const User = require('./models/user')
 
 const app = express()
 
 app.use(bodyParser.json())
-passport.use(new BasicStrategy(
-  function(username, password, callback) {
-    console.log('username', username)
-    console.log('password', password)
-    callback(null, {
-      username: 'jason'
-    })
-  }
-));
 
 app.use(passport.initialize())
-app.use(express.static('public'))
-
-app.get(
-  '/login',
-  passport.authenticate('basic'),
-  (req, res) => {
-    res.json({
-      is: "here"
-  })
-})
 
 function getUser(username, cb){
   User.findOne({username}, (err, user)=>{
@@ -85,13 +65,6 @@ app.get('/car/:id', (req, res)=>{
   })
 
 })
-
-app.post("/login"
-    ,passport.authenticate('local',{
-        successRedirect : "/",
-        failureRedirect : "/login",
-    })
-);
 
 app.get('*', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
