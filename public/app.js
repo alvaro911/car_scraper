@@ -13127,7 +13127,6 @@ var CarList = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('rendering carlist cars', this.props.carlist['cars']);
       return _react2.default.createElement(
         'div',
         { className: 'app-body' },

@@ -46,7 +46,6 @@ class CarList extends React.Component{
   }
 
   render(){
-    console.log('rendering carlist cars', this.props.carlist['cars'])
     return(
       <div className="app-body">
         <CarSearch />
