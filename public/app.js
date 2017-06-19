@@ -13064,8 +13064,6 @@ var CarList = function (_React$Component) {
           cars = _props$carlist.cars,
           loading = _props$carlist.loading;
 
-      console.log('**************************');
-      console.log(cars);
       if (loading) {
         return _react2.default.createElement(
           'h1',
@@ -14387,7 +14385,7 @@ var HowItWorks = function (_React$Component) {
             null,
             "CarStock finds your ideal used car in Colorado. ",
             _react2.default.createElement("br", null),
-            "all you need to do is eithr provide the city, or a car make, or both. ",
+            "All you need to do is eiter provide the city, or a car make, or both. ",
             _react2.default.createElement("br", null),
             "And you will get a list of cars matching your exact criteria. ",
             _react2.default.createElement("br", null),

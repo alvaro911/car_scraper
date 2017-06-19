@@ -1,9 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const passport = require('passport')
 const morgan = require('morgan')
-const BasicStrategy = require('passport-http').BasicStrategy
 
 mongoose.Promise = global.Promise
 
@@ -13,8 +11,7 @@ const CarList = require('./models/carlists')
 const app = express()
 
 app.use(bodyParser.json())
-
-app.use(passport.initialize())
+app.use(express.static('public'))
 
 function getUser(username, cb){
   User.findOne({username}, (err, user)=>{
@@ -66,10 +63,6 @@ app.get('/car/:id', (req, res)=>{
 
 })
 
-app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, 'index.html'));
-  })
-
 let server
 
 function runServer(databaseUrl=DATABASE_URL, port=PORT){
@@ -107,9 +100,5 @@ function closeServer(){
 if(require.main === module){
   runServer().catch(err => console.error(err))
 }
-//
-// app.listen(PORT, ()=> console.log(`Server listening to port: ${PORT}`))
-//
-
 
 module.exports = {app, runServer, closeServer}

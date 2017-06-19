@@ -14,8 +14,6 @@ class CarList extends React.Component{
 
   renderCarlist(){
     const { cars, loading } = this.props.carlist
-    console.log('**************************');
-    console.log(cars);
     if(loading){
       return <h1>Loading...</h1>
     } else {
