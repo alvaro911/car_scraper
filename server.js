@@ -24,7 +24,7 @@ app.get('/cars', (req, res)=>{
   const searchCity = req.query.city
   if(!searchCity){
     CarList.find({
-      model:searchParam
+      model: new RegExp(searchParam, 'i')
     }).then(cars => {
       return res.status(200).json(cars)
     }).catch(err => {
@@ -42,8 +42,8 @@ app.get('/cars', (req, res)=>{
     })
   }else{
     CarList.find({
-      model:searchParam,
-      city:searchCity
+      model: new RegExp(searchParam, 'i'),
+      city: searchCity
     }).then(cars => {
       return res.status(200).json(cars)
     }).catch(err => {

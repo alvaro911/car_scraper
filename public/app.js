@@ -8299,7 +8299,7 @@ var CarSearch = function (_React$Component) {
     key: 'startSearch',
     value: function startSearch(e) {
       e.preventDefault();
-      var query = this.refs.model.value.toLowerCase();
+      var query = this.refs.model.value;
       var city = this.refs.city.value.toLowerCase();
       this.props.getCars(query, city);
       if (this.props.location.pathname !== 'carlist') {
