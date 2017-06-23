@@ -87,6 +87,29 @@ header{
   height: auto;
 }
 
+.explainer-info{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.explainer-pieces{
+  width: 100%;
+  height: auto;
+  margin:20px 0;
+}
+
+.explainer-images{
+  display: flex;
+  justify-content: center;
+  width: 58px;
+  height: 50px;
+  margin: 0 auto;
+}
+
 .diagonal, .explainer{
   background-color: black;
 }
@@ -356,6 +379,10 @@ footer a{
   .car-elements{
     padding: 1em 3em;
   }
+
+  .explainer-pieces{
+    width: 30%;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation:landscape){
@@ -402,6 +429,10 @@ footer a{
 
   .values{
     padding-left: 3.5em;
+  }
+
+  .explainer-pieces{
+    width: 30%;
   }
 }
 
@@ -473,5 +504,9 @@ footer a{
 
   .go-back{
     width:15%;
+  }
+
+  .explainer-pieces{
+    width: 30%;
   }
 }
